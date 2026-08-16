@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Iqro tarix testlari</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{ --ink:#000; --paper:#fff; --muted:#555; --soft:#e6e2d8; --nav-h:62px; }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;background:#fff;color:#000;}
+  body{font-family:"Times New Roman", Times, "Liberation Serif", serif; font-size:17px; line-height:1.5;
+       padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom,0px)); -webkit-font-smoothing:antialiased;}
+  h1,h2,h3{font-weight:700; margin:0 0 8px;}
+  a{color:#000;}
+  .wrap{max-width:680px; margin:0 auto; padding:14px 16px 24px;}
+  header.topbar{border-bottom:2px double #000; padding:14px 16px 10px; text-align:center; background:#fff;}
+  .brand-mark{display:flex; align-items:center; justify-content:center; gap:10px;}
+  .brand-mark svg{width:34px;height:34px;}
+  .brand-title{font-size:24px; letter-spacing:.5px; font-variant:small-caps;}
+  .brand-sub{font-size:13px; color:var(--muted); font-style:italic; margin-top:2px;}
+  .rule{display:flex; align-items:center; gap:8px; margin:12px 0;}
+  .rule::before,.rule::after{content:""; flex:1; height:1px; background:#000; opacity:.35;}
+  .rule svg{width:16px;height:16px;opacity:.7;}
+  .card{border:1px solid #000; padding:14px; margin-bottom:12px;}
+  .card.locked{border-style:dashed; opacity:.9;}
+  .card h3{font-size:19px; display:flex; align-items:center; gap:8px;}
+  .card h3 svg{width:20px;height:20px;flex:none;}
+  .desc{font-size:15px; margin-top:6px;}
+  .tagrow{display:flex; flex-wrap:wrap; gap:6px; margin-top:10px;}
+  .tag{border:1px solid #000; padding:1px 8px; font-size:12px;}
+  .tag.fill{background:#000; color:#fff;}
+  button,.btn{font-family:inherit; font-size:16px; cursor:pointer; background:#fff; color:#000;
+              border:1px solid #000; padding:9px 16px; display:inline-block; text-decoration:none; text-align:center;}
+  button.primary,.btn.primary{background:#000; color:#fff;}
+  button:disabled{opacity:.45;}
+  .btn-row{display:flex; gap:8px; margin-top:12px;}
+  .btn-row > *{flex:1;}
+  .full{width:100%;}
+  .lockmsg{margin-top:10px; padding:9px 10px; border-left:3px solid #000; background:#f6f4ef; font-size:14px;}
+  .hero{text-align:center; padding:6px 0 4px;}
+  .emblem{width:96px;height:96px;margin:4px auto 8px;display:block;}
+  .authors{margin:16px 0 4px; text-align:center; border-top:1px solid #000; border-bottom:1px solid #000; padding:10px 6px;}
+  .authors .lbl{font-size:12px; letter-spacing:2px; text-transform:uppercase; color:var(--muted);}
+  .authors .names{font-size:18px; font-weight:700; margin-top:3px;}
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-top:14px;}
+  .stat{border:1px solid #000; padding:10px 6px; text-align:center;}
+  .stat b{display:block; font-size:22px;}
+  .stat span{font-size:12px; color:var(--muted);}
+  .quote{font-style:italic; text-align:center; font-size:15px; color:#333; margin:16px 8px 0;}
+  .qhead{display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #000;
+         padding-bottom:8px; margin-bottom:12px; font-size:14px;}
+  .qtext{font-size:19px; font-weight:700; margin:8px 0 14px;}
+  .opt{display:block; width:100%; text-align:left; margin-bottom:8px; padding:11px 12px;
+       border:1px solid #000; background:#fff; font-size:16px;}
+  .opt.sel{background:#000; color:#fff;}
+  .opt.correct{border-width:2px;}
+  .opt.correct::after{content:" ✓"; font-weight:700;}
+  .opt.wrong{text-decoration:line-through; opacity:.6;}
+  .opt .let{font-weight:700; margin-right:8px;}
+  .progress{height:4px; background:var(--soft); margin-bottom:12px;}
+  .progress i{display:block; height:100%; background:#000;}
+  .score{text-align:center; padding:14px 0;}
+  .score .big{font-size:46px; font-weight:700; line-height:1;}
+  .review{border-top:1px solid #000; padding-top:10px; margin-top:6px;}
+  .review .q{margin-bottom:16px;}
+  .review .exp{font-size:14px; font-style:italic; color:#333; margin-top:6px; border-left:2px solid #000; padding-left:8px;}
+  table{width:100%; border-collapse:collapse; font-size:15px;}
+  th,td{border:1px solid #000; padding:7px 8px; text-align:left;}
+  th{font-variant:small-caps;}
+  nav.bottom{position:fixed; left:0; right:0; bottom:0; z-index:50; display:grid; grid-template-columns:repeat(6,1fr);
+             background:#fff; border-top:2px double #000; padding-bottom:env(safe-area-inset-bottom,0px);}
+  nav.bottom button{border:0; background:none; padding:6px 2px 7px; font-size:10.5px;
+                    display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--muted);}
+  nav.bottom button svg{width:21px;height:21px;}
+  nav.bottom button.on{color:#000; font-weight:700;}
+  .empty{text-align:center; color:var(--muted); padding:30px 10px; font-style:italic;}
+  .center{text-align:center;} .small{font-size:13px; color:var(--muted);}
+  input{font-family:inherit; font-size:15px; padding:9px; border:1px solid #000; background:#fff; color:#000; width:100%;}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand-mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="1.3">
+      <path d="M3 21h18M5 21V8m4 13V8m6 13V8m4 13V8M3 8h18l-2-3H5L3 8zM4 5h16"/>
+    </svg>
+    <div>
+      <div class="brand-title">Iqro tarix testlari</div>
+      <div class="brand-sub">Tarix fani — bilim sinovi</div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap" id="root"></div>
+<nav class="bottom" id="nav"></nav>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   IQRO TARIX TESTLARI — Mini App (serversiz, bitta fayl)
+   Mualliflar: Dilmurod Usmonov va Farrux Normurodov
+
+   ╔═══════════════ SOZLAMALAR — SHU YERNI TAHRIRLANG ═══════════╗ */
+
+const KANAL       = "https://t.me/Iqrotarix";   // kanalingiz havolasi
+const KANAL_NOMI  = "@Iqrotarix";               // kanal nomi
+const BOT_NOMI    = "@Iqrotarixbot";
+
+// Pullik testlarni ochadigan kodlar. To'lov qilgan o'quvchiga shu kodni berasiz.
+// "all" — barcha pullik testlar ochiladi, yoki test ID raqamini yozing: [8, 9]
+const KODLAR = {
+  "IQRO2026":  "all",
+  "TARIX100":  "all",
+  "PREMIUM1":  [8],
+  "PREMIUM2":  [9]
+};
+
+/*  ╚══════════════════════════════════════════════════════════════╝ */
+
+const TESTLAR = [
+ {
+  "id": 1,
+  "section": "testlar",
+  "title": "Qadimgi Oʻrta Osiyo davlatlari",
+  "description": "Baqtriya, Xorazm, Soʻgʻdiyona va koʻchmanchi qabilalar tarixi.",
+  "era": "Qadimgi dunyo",
+  "duration_min": 12,
+  "is_paid": 0,
+  "requires_sub": 1,
+  "price_label": "",
+  "questions": [
+   {
+    "text": "Oʻrta Osiyodagi ilk davlat uyushmalari (Baqtriya, Xorazm, Soʻgʻdiyona) qaysi davrda shakllangan?",
+    "options": [
+     "Mil. avv. I ming yillik boshlari",
+     "Mil. avv. V ming yillik",
+     "Milodiy III asr",
+     "Milodiy X asr"
+    ],
+    "correct": 0,
+    "explanation": "Ilk davlat uyushmalari mil. avv. I ming yillik boshlarida vujudga kelgan."
+   },
+   {
+    "text": "\"Avesto\" qaysi dinning muqaddas kitobi hisoblanadi?",
+    "options": [
+     "Buddaviylik",
+     "Zardushtiylik",
+     "Moniylik",
+     "Nasroniylik"
+    ],
+    "correct": 1,
+    "explanation": "\"Avesto\" — zardushtiylik dinining muqaddas kitobi."
+   },
+   {
+    "text": "Massaget qabilalariga boshchilik qilib, Eron shohi Kirga qarshi kurashgan malika kim?",
+    "options": [
+     "Roʻshanak",
+     "Toʻmaris",
+     "Zarina",
+     "Sparetra"
+    ],
+    "correct": 1,
+    "explanation": "Toʻmaris massagetlarga boshchilik qilib, Kir II ni magʻlub etgan."
+   },
+   {
+    "text": "Aleksandr Makedonskiy Oʻrta Osiyoga qaysi asrda bostirib kirgan?",
+    "options": [
+     "Mil. avv. VI asr",
+     "Mil. avv. IV asr",
+     "Mil. avv. II asr",
+     "Milodiy I asr"
+    ],
+    "correct": 1,
+    "explanation": "Mil. avv. 329–327-yillarda, yaʼni IV asrda."
+   },
+   {
+    "text": "Aleksandr Makedonskiyga qarshi Soʻgʻdiyonada ozodlik kurashiga kim rahbarlik qilgan?",
+    "options": [
+     "Spitamen",
+     "Shiroq",
+     "Kanishka",
+     "Bahrom"
+    ],
+    "correct": 0,
+    "explanation": "Spitamen soʻgʻdiylar qoʻzgʻolonining sarkardasi boʻlgan."
+   },
+   {
+    "text": "Buyuk ipak yoʻli qaysi davrda xalqaro savdo yoʻli sifatida shakllangan?",
+    "options": [
+     "Mil. avv. II asr",
+     "Milodiy VIII asr",
+     "Mil. avv. VIII asr",
+     "Milodiy XIV asr"
+    ],
+    "correct": 0,
+    "explanation": "Mil. avv. II asrda Xitoy elchisi Chjan Syan safaridan soʻng shakllangan."
+   },
+   {
+    "text": "Kushon podsholigi eng yuksalgan davrda kim hukmronlik qilgan?",
+    "options": [
+     "Kanishka",
+     "Kir II",
+     "Doro I",
+     "Salavk"
+    ],
+    "correct": 0,
+    "explanation": "Kanishka davrida Kushon podsholigi eng qudratli boʻlgan."
+   },
+   {
+    "text": "Ahamoniylar davlati Oʻrta Osiyoni bosib olgan hukmdor kim?",
+    "options": [
+     "Doro III",
+     "Kir II",
+     "Kserks",
+     "Artakserks"
+    ],
+    "correct": 1,
+    "explanation": "Kir II (Buyuk Kir) mil. avv. VI asrda bosqinni boshlagan."
+   }
+  ]
+ },
+ {
+  "id": 2,
+  "section": "testlar",
+  "title": "Amir Temur va temuriylar davri",
+  "description": "Sohibqiron davlati, temuriylar madaniyati va ilm-fani.",
+  "era": "Oʻrta asrlar",
+  "duration_min": 12,
+  "is_paid": 0,
+  "requires_sub": 1,
+  "price_label": "",
+  "questions": [
+   {
+    "text": "Amir Temur necha yilda va qayerda tugʻilgan?",
+    "options": [
+     "1336-yil, Kesh (Shahrisabz)",
+     "1370-yil, Samarqand",
+     "1320-yil, Buxoro",
+     "1360-yil, Termiz"
+    ],
+    "correct": 0,
+    "explanation": "Amir Temur 1336-yil 9-aprelda Kesh (hozirgi Shahrisabz) yaqinida tugʻilgan."
+   },
+   {
+    "text": "Amir Temur davlatining poytaxti qaysi shahar edi?",
+    "options": [
+     "Buxoro",
+     "Hirot",
+     "Samarqand",
+     "Toshkent"
+    ],
+    "correct": 2,
+    "explanation": "Samarqand 1370-yildan poytaxt boʻlgan."
+   },
+   {
+    "text": "Amir Temur Usmoniylar sultoni Boyazid I ni qaysi jangda magʻlub etgan?",
+    "options": [
+     "Anqara jangi",
+     "Kosovo jangi",
+     "Panipat jangi",
+     "Chandiroq jangi"
+    ],
+    "correct": 0,
+    "explanation": "1402-yilgi Anqara jangida Boyazid I asirga olingan."
+   },
+   {
+    "text": "\"Temur tuzuklari\" asari nima haqida?",
+    "options": [
+     "Tibbiyot",
+     "Davlat boshqaruvi va harbiy tartib",
+     "Astronomiya",
+     "Sheʼriyat"
+    ],
+    "correct": 1,
+    "explanation": "Asarda davlatni boshqarish va qoʻshin tuzish qoidalari bayon etilgan."
+   },
+   {
+    "text": "Mirzo Ulugʻbekning mashhur astronomik asari qanday nomlanadi?",
+    "options": [
+     "Tib qonunlari",
+     "Ziji jadidi Koʻragoniy",
+     "Hindiston",
+     "Qutadgʻu bilig"
+    ],
+    "correct": 1,
+    "explanation": "\"Ziji jadidi Koʻragoniy\" — 1018 yulduz oʻrni keltirilgan jadval."
+   },
+   {
+    "text": "Amir Temur necha yilda vafot etgan?",
+    "options": [
+     "1370",
+     "1394",
+     "1405",
+     "1449"
+    ],
+    "correct": 2,
+    "explanation": "1405-yil fevralda Xitoy yurishi arafasida Oʻtrorda vafot etgan."
+   },
+   {
+    "text": "Hindistonda Boburiylar saltanatiga kim asos solgan?",
+    "options": [
+     "Shohruh Mirzo",
+     "Husayn Boyqaro",
+     "Zahiriddin Muhammad Bobur",
+     "Abdullaxon II"
+    ],
+    "correct": 2,
+    "explanation": "Bobur 1526-yilgi Panipat jangidan soʻng saltanatga asos solgan."
+   },
+   {
+    "text": "Mirzo Ulugʻbek rasadxonasi qaysi shaharda qurilgan?",
+    "options": [
+     "Buxoro",
+     "Samarqand",
+     "Hirot",
+     "Koʻhna Urganch"
+    ],
+    "correct": 1,
+    "explanation": "Rasadxona 1420-yillarda Samarqandda, Koʻhak tepaligida qurilgan."
+   }
+  ]
+ },
+ {
+  "id": 3,
+  "section": "testlar",
+  "title": "Jahon tarixi: kashfiyotlar va inqiloblar",
+  "description": "Buyuk geografik kashfiyotlardan yangi davrgacha.",
+  "era": "Yangi davr",
+  "duration_min": 12,
+  "is_paid": 0,
+  "requires_sub": 0,
+  "price_label": "",
+  "questions": [
+   {
+    "text": "1492-yilda Amerikaga yetib borgan sayyoh kim?",
+    "options": [
+     "Vasko da Gama",
+     "Xristofor Kolumb",
+     "Magellan",
+     "Jeyms Kuk"
+    ],
+    "correct": 1,
+    "explanation": "Kolumb 1492-yil 12-oktabrda Amerika qirgʻoqlariga yetib bordi."
+   },
+   {
+    "text": "Hindistonga dengiz yoʻlini kim ochgan?",
+    "options": [
+     "Vasko da Gama",
+     "Marko Polo",
+     "Amerigo Vespuchchi",
+     "Bartolomeu Diash"
+    ],
+    "correct": 0,
+    "explanation": "Vasko da Gama 1498-yilda Kalikutga yetib keldi."
+   },
+   {
+    "text": "Birinchi dunyo aylana sayohatiga kim boshchilik qilgan?",
+    "options": [
+     "Fernan Magellan",
+     "Frensis Dreyk",
+     "Jeyms Kuk",
+     "Kolumb"
+    ],
+    "correct": 0,
+    "explanation": "1519–1522-yillarda Magellan boshlagan safarni El-Kano yakunlagan."
+   },
+   {
+    "text": "Konstantinopol usmonlilar tomonidan qachon zabt etilgan?",
+    "options": [
+     "1204-yil",
+     "1389-yil",
+     "1453-yil",
+     "1492-yil"
+    ],
+    "correct": 2,
+    "explanation": "1453-yilda Sulton Mehmed II shaharni egallagan."
+   },
+   {
+    "text": "Buyuk Fransuz inqilobi qaysi yilda boshlangan?",
+    "options": [
+     "1776",
+     "1789",
+     "1812",
+     "1848"
+    ],
+    "correct": 1,
+    "explanation": "1789-yil 14-iyulda Bastiliya qamoqxonasi olingan."
+   },
+   {
+    "text": "AQSh Mustaqillik deklaratsiyasi qachon qabul qilingan?",
+    "options": [
+     "1776-yil 4-iyul",
+     "1783-yil 3-sentabr",
+     "1787-yil 17-sentabr",
+     "1791-yil 15-dekabr"
+    ],
+    "correct": 0,
+    "explanation": "1776-yil 4-iyulda qabul qilingan."
+   },
+   {
+    "text": "Birinchi jahon urushi qaysi yillarda boʻlib oʻtgan?",
+    "options": [
+     "1914–1918",
+     "1912–1916",
+     "1939–1945",
+     "1904–1905"
+    ],
+    "correct": 0,
+    "explanation": "Urush 1914-yil iyulda boshlanib, 1918-yil noyabrda tugagan."
+   },
+   {
+    "text": "Sanoat toʻntarishi dastlab qaysi mamlakatda boshlangan?",
+    "options": [
+     "Fransiya",
+     "Angliya",
+     "Germaniya",
+     "AQSh"
+    ],
+    "correct": 1,
+    "explanation": "XVIII asrning ikkinchi yarmida Angliyada boshlangan."
+   }
+  ]
+ },
+ {
+  "id": 4,
+  "section": "olimpiada",
+  "title": "Olimpiada — I bosqich",
+  "description": "Maktab va tuman bosqichi darajasidagi savollar.",
+  "era": "Aralash",
+  "duration_min": 20,
+  "is_paid": 0,
+  "requires_sub": 1,
+  "price_label": "",
+  "questions": [
+   {
+    "text": "\"Qutadgʻu bilig\" asarining muallifi kim?",
+    "options": [
+     "Yusuf Xos Hojib",
+     "Mahmud Koshgʻariy",
+     "Ahmad Yassaviy",
+     "Alisher Navoiy"
+    ],
+    "correct": 0,
+    "explanation": "Asar 1069–1070-yillarda Yusuf Xos Hojib tomonidan yozilgan."
+   },
+   {
+    "text": "Somoniylar davlatining poytaxti qaysi shahar boʻlgan?",
+    "options": [
+     "Samarqand",
+     "Buxoro",
+     "Marv",
+     "Nishopur"
+    ],
+    "correct": 1,
+    "explanation": "Buxoro Somoniylar davlatining poytaxti edi."
+   },
+   {
+    "text": "Amir Temurning Dehli yurishi qaysi yilda amalga oshirilgan?",
+    "options": [
+     "1391",
+     "1395",
+     "1398",
+     "1402"
+    ],
+    "correct": 2,
+    "explanation": "1398-yilda Dehli egallangan."
+   },
+   {
+    "text": "Shayboniyxon Samarqandni qachon egallagan?",
+    "options": [
+     "1500-yil",
+     "1512-yil",
+     "1447-yil",
+     "1526-yil"
+    ],
+    "correct": 0,
+    "explanation": "1500-yilda Muhammad Shayboniyxon Samarqandni egalladi."
+   },
+   {
+    "text": "Toshkent Rossiya imperiyasi tomonidan qachon bosib olingan?",
+    "options": [
+     "1853-yil",
+     "1865-yil",
+     "1868-yil",
+     "1876-yil"
+    ],
+    "correct": 1,
+    "explanation": "1865-yil iyunda general Chernyayev qoʻshinlari shaharni egalladi."
+   },
+   {
+    "text": "\"Padarkush\" dramasining muallifi kim?",
+    "options": [
+     "Abdulla Qodiriy",
+     "Mahmudxoʻja Behbudiy",
+     "Choʻlpon",
+     "Fitrat"
+    ],
+    "correct": 1,
+    "explanation": "Jadid maʼrifatparvari Mahmudxoʻja Behbudiy 1911-yilda yozgan."
+   },
+   {
+    "text": "Turkiston Muxtoriyati qaysi shaharda eʼlon qilingan?",
+    "options": [
+     "Toshkent",
+     "Samarqand",
+     "Qoʻqon",
+     "Andijon"
+    ],
+    "correct": 2,
+    "explanation": "1917-yil noyabrda Qoʻqonda eʼlon qilingan."
+   },
+   {
+    "text": "Oʻzbekiston Respublikasi mustaqilligi toʻgʻrisidagi hujjat qachon qabul qilingan?",
+    "options": [
+     "1991-yil 31-avgust",
+     "1991-yil 1-sentabr",
+     "1990-yil 20-iyun",
+     "1992-yil 8-dekabr"
+    ],
+    "correct": 0,
+    "explanation": "31-avgustda qabul qilingan, 1-sentabr Mustaqillik kuni deb belgilangan."
+   }
+  ]
+ },
+ {
+  "id": 5,
+  "section": "olimpiada",
+  "title": "Olimpiada — Respublika bosqichi (murakkab)",
+  "description": "Yuqori darajadagi tahliliy savollar.",
+  "era": "Aralash",
+  "duration_min": 25,
+  "is_paid": 0,
+  "requires_sub": 1,
+  "price_label": "",
+  "questions": [
+   {
+    "text": "Jaloliddin Manguberdi moʻgʻullar ustidan gʻalaba qozongan jang qaysi?",
+    "options": [
+     "Parvon jangi",
+     "Kalka jangi",
+     "Sind jangi",
+     "Chandiroq jangi"
+    ],
+    "correct": 0,
+    "explanation": "1221-yilgi Parvon jangida moʻgʻullar magʻlub etilgan."
+   },
+   {
+    "text": "Moʻgʻullar Xorazmshohlar davlatiga qaysi yillarda bostirib kirgan?",
+    "options": [
+     "1206–1210",
+     "1219–1221",
+     "1237–1241",
+     "1260–1264"
+    ],
+    "correct": 1,
+    "explanation": "Chingizxon yurishi 1219-yilda Oʻtrordan boshlangan."
+   },
+   {
+    "text": "Abu Rayhon Beruniyning Hindiston haqidagi asari qanday nomlanadi?",
+    "options": [
+     "Hindiston",
+     "Tib qonunlari",
+     "Osor ul-boqiya",
+     "Al-jabr"
+    ],
+    "correct": 0,
+    "explanation": "\"Hindiston\" asari hind madaniyati va faniga bagʻishlangan."
+   },
+   {
+    "text": "Ibn Sinoning tibbiyotga oid asosiy asari qaysi?",
+    "options": [
+     "Kitob ash-shifo",
+     "Tib qonunlari",
+     "Hindiston",
+     "Al-Qonun fi-l-mantiq"
+    ],
+    "correct": 1,
+    "explanation": "\"Al-Qonun fit-tib\" — \"Tib qonunlari\" besh kitobdan iborat."
+   },
+   {
+    "text": "Buxoro Xalq Sovet Respublikasi qachon tashkil etilgan?",
+    "options": [
+     "1918-yil",
+     "1920-yil",
+     "1924-yil",
+     "1925-yil"
+    ],
+    "correct": 1,
+    "explanation": "1920-yil sentabrda amirlik agʻdarilgach tuzilgan."
+   },
+   {
+    "text": "Oʻrta Osiyoda milliy-hududiy chegaralanish qaysi yilda oʻtkazilgan?",
+    "options": [
+     "1920-yil",
+     "1922-yil",
+     "1924-yil",
+     "1929-yil"
+    ],
+    "correct": 2,
+    "explanation": "1924-yilda Oʻzbekiston SSR tashkil etilgan."
+   },
+   {
+    "text": "Alisher Navoiyning \"Xamsa\" asari nechta dostondan iborat?",
+    "options": [
+     "3",
+     "4",
+     "5",
+     "6"
+    ],
+    "correct": 2,
+    "explanation": "\"Xamsa\" besh dostondan iborat."
+   },
+   {
+    "text": "Al-Xorazmiyning qaysi asari \"algebra\" fanining nomiga asos boʻlgan?",
+    "options": [
+     "Zij",
+     "Al-kitob al-muxtasar fi hisob al-jabr va al-muqobala",
+     "Kitob as-surat al-arz",
+     "At-tarix"
+    ],
+    "correct": 1,
+    "explanation": "\"Al-jabr\" soʻzidan \"algebra\" atamasi kelib chiqqan."
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "section": "ms",
+  "title": "Milliy sertifikat — sinov varianti",
+  "description": "Milliy sertifikat imtihoni formatidagi bepul sinov.",
+  "era": "Aralash",
+  "duration_min": 20,
+  "is_paid": 0,
+  "requires_sub": 1,
+  "price_label": "",
+  "questions": [
+   {
+    "text": "Qoraxoniylar davlati qaysi asrda tashkil topgan?",
+    "options": [
+     "VIII asr",
+     "X asr",
+     "XII asr",
+     "XIV asr"
+    ],
+    "correct": 1,
+    "explanation": "X asr oʻrtalarida tashkil topgan."
+   },
+   {
+    "text": "Mahmud Koshgʻariyning mashhur asari qaysi?",
+    "options": [
+     "Devonu lugʻotit turk",
+     "Boburnoma",
+     "Temur tuzuklari",
+     "Shajarai turk"
+    ],
+    "correct": 0,
+    "explanation": "XI asrda yozilgan turkiy tillar lugʻati."
+   },
+   {
+    "text": "Buxoro amirligi qaysi yilda Rossiya protektoratiga aylangan?",
+    "options": [
+     "1868-yil",
+     "1873-yil",
+     "1876-yil",
+     "1881-yil"
+    ],
+    "correct": 0,
+    "explanation": "1868-yilgi shartnomaga koʻra amirlik vassalga aylantirilgan."
+   },
+   {
+    "text": "Qoʻqon xonligi qachon tugatilgan?",
+    "options": [
+     "1865-yil",
+     "1873-yil",
+     "1876-yil",
+     "1884-yil"
+    ],
+    "correct": 2,
+    "explanation": "1876-yilda tugatilib, Fargʻona viloyati tashkil etilgan."
+   },
+   {
+    "text": "Ikkinchi jahon urushi qachon boshlangan?",
+    "options": [
+     "1939-yil 1-sentabr",
+     "1941-yil 22-iyun",
+     "1938-yil 30-sentabr",
+     "1940-yil 10-may"
+    ],
+    "correct": 0,
+    "explanation": "Germaniya Polshaga hujum qilgan kun."
+   },
+   {
+    "text": "Oʻzbekiston Respublikasi Konstitutsiyasi qachon qabul qilingan?",
+    "options": [
+     "1991-yil 31-avgust",
+     "1992-yil 8-dekabr",
+     "1993-yil 2-iyul",
+     "1994-yil 25-dekabr"
+    ],
+    "correct": 1,
+    "explanation": "1992-yil 8-dekabrda Oliy Kengashning XI sessiyasida qabul qilingan."
+   },
+   {
+    "text": "Zahiriddin Muhammad Boburning tarixiy-memuar asari qaysi?",
+    "options": [
+     "Boburnoma",
+     "Xamsa",
+     "Zafarnoma",
+     "Shohnoma"
+    ],
+    "correct": 0,
+    "explanation": "\"Boburnoma\" jahon adabiyotining nodir memuar asari."
+   },
+   {
+    "text": "Xorazm shaharlaridan biri boʻlgan Koʻhna Urganch qaysi davlat poytaxti edi?",
+    "options": [
+     "Somoniylar",
+     "Xorazmshohlar",
+     "Qoraxoniylar",
+     "Saljuqiylar"
+    ],
+    "correct": 1,
+    "explanation": "Xorazmshohlar davlatining poytaxti boʻlgan."
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "section": "ms",
+  "title": "Milliy sertifikat — toʻliq imtihon (A+ daraja)",
+  "description": "Toʻliq format, batafsil tahlil bilan. Admin ruxsati talab qilinadi.",
+  "era": "Aralash",
+  "duration_min": 40,
+  "is_paid": 1,
+  "requires_sub": 1,
+  "price_label": "Admin orqali ochiladi",
+  "questions": [
+   {
+    "text": "Amir Temur davlatida oliy kengash qanday nomlangan?",
+    "options": [
+     "Devoni oliy",
+     "Majlisi ulamo",
+     "Kengashi xos",
+     "Devonbegi"
+    ],
+    "correct": 0,
+    "explanation": "Markaziy boshqaruv organi Devoni oliy deb yuritilgan."
+   },
+   {
+    "text": "Registon ansamblidagi eng qadimgi madrasa qaysi?",
+    "options": [
+     "Sherdor",
+     "Tillakori",
+     "Ulugʻbek madrasasi",
+     "Mir Arab"
+    ],
+    "correct": 2,
+    "explanation": "Ulugʻbek madrasasi 1417–1420-yillarda qurilgan."
+   },
+   {
+    "text": "Ashtarxoniylar sulolasi qaysi davlatda hukmronlik qilgan?",
+    "options": [
+     "Xiva xonligi",
+     "Buxoro xonligi",
+     "Qoʻqon xonligi",
+     "Boburiylar"
+    ],
+    "correct": 1,
+    "explanation": "XVII–XVIII asrlarda Buxoroda hukmronlik qilgan."
+   },
+   {
+    "text": "Jadidchilik harakatining asosiy maqsadi nima edi?",
+    "options": [
+     "Diniy islohot",
+     "Maʼrifat va maktab islohoti orqali milliy uygʻonish",
+     "Harbiy qoʻzgʻolon",
+     "Savdo monopoliyasi"
+    ],
+    "correct": 1,
+    "explanation": "Usuli jadid maktablari orqali maʼrifat tarqatish asosiy yoʻnalish edi."
+   },
+   {
+    "text": "1916-yilgi Turkistondagi qoʻzgʻolonning bevosita sababi nima?",
+    "options": [
+     "Soliqlar oshirilishi",
+     "Mardikorlikka safarbarlik toʻgʻrisidagi farmon",
+     "Yer islohoti",
+     "Diniy taqiqlar"
+    ],
+    "correct": 1,
+    "explanation": "1916-yil 25-iyundagi mardikorlikka olish farmoni sabab boʻlgan."
+   },
+   {
+    "text": "Oʻzbekistonda \"paxta ishi\" nomli siyosiy kampaniya qaysi yillarga toʻgʻri keladi?",
+    "options": [
+     "1950-yillar",
+     "1960-yillar",
+     "1980-yillar",
+     "1990-yillar"
+    ],
+    "correct": 2,
+    "explanation": "1983-yildan boshlangan qatagʻon kampaniyasi."
+   },
+   {
+    "text": "Oʻzbekiston Respublikasi Davlat bayrogʻi qachon tasdiqlangan?",
+    "options": [
+     "1991-yil 18-noyabr",
+     "1992-yil 2-iyul",
+     "1991-yil 31-avgust",
+     "1993-yil 10-dekabr"
+    ],
+    "correct": 0,
+    "explanation": "1991-yil 18-noyabrda tasdiqlangan."
+   },
+   {
+    "text": "Oʻzbekiston BMTga aʼzo boʻlgan yil?",
+    "options": [
+     "1991",
+     "1992",
+     "1993",
+     "1995"
+    ],
+    "correct": 1,
+    "explanation": "1992-yil 2-martda BMTga aʼzo boʻlgan."
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "section": "pullik",
+  "title": "Premium: Umumiy takrorlash — 1-blok",
+  "description": "Barcha davrlar boʻyicha jamlanma. Admin ruxsatidan soʻng ochiladi.",
+  "era": "Aralash",
+  "duration_min": 30,
+  "is_paid": 1,
+  "requires_sub": 1,
+  "price_label": "Toʻlovdan soʻng admin ochadi",
+  "questions": [
+   {
+    "text": "Afrosiyob yodgorligi qaysi shahar hududida joylashgan?",
+    "options": [
+     "Buxoro",
+     "Samarqand",
+     "Termiz",
+     "Xiva"
+    ],
+    "correct": 1,
+    "explanation": "Afrosiyob — qadimgi Samarqand oʻrni."
+   },
+   {
+    "text": "Ichan qalʼa qaysi shaharda joylashgan?",
+    "options": [
+     "Xiva",
+     "Shahrisabz",
+     "Qarshi",
+     "Koʻkon"
+    ],
+    "correct": 0,
+    "explanation": "Xivadagi ichki shahar — YuNESKO roʻyxatida."
+   },
+   {
+    "text": "Oq Saroy kimning buyrugʻi bilan qurilgan?",
+    "options": [
+     "Ulugʻbek",
+     "Amir Temur",
+     "Shayboniyxon",
+     "Abdullaxon II"
+    ],
+    "correct": 1,
+    "explanation": "Shahrisabzda Amir Temur buyrugʻi bilan qurilgan."
+   },
+   {
+    "text": "Ahmad Yassaviy maqbarasi qaysi shaharda?",
+    "options": [
+     "Turkiston",
+     "Oʻsh",
+     "Marv",
+     "Nishopur"
+    ],
+    "correct": 0,
+    "explanation": "Hozirgi Qozogʻistondagi Turkiston shahrida, Temur davrida qurilgan."
+   },
+   {
+    "text": "Zafarnoma asarining muallifi kim?",
+    "options": [
+     "Sharafiddin Ali Yazdiy",
+     "Abulgʻozi Bahodirxon",
+     "Muhammad Solih",
+     "Hofiz Tanish"
+    ],
+    "correct": 0,
+    "explanation": "Amir Temur yurishlariga bagʻishlangan asar."
+   },
+   {
+    "text": "Xiva xonligi qaysi yilda Rossiya vassaliga aylangan?",
+    "options": [
+     "1868",
+     "1873",
+     "1876",
+     "1881"
+    ],
+    "correct": 1,
+    "explanation": "1873-yilgi Gandimiyon shartnomasiga koʻra."
+   },
+   {
+    "text": "Amir Temur qaysi yilda Toʻxtamishxonga qarshi Qunduzcha jangini oʻtkazgan?",
+    "options": [
+     "1385",
+     "1391",
+     "1395",
+     "1399"
+    ],
+    "correct": 1,
+    "explanation": "1391-yilgi Qunduzcha jangi."
+   },
+   {
+    "text": "Oʻzbekistonda \"Mustaqillik\" maydonining avvalgi nomi qanday edi?",
+    "options": [
+     "Lenin maydoni",
+     "Xalqlar doʻstligi",
+     "Temur maydoni",
+     "Registon"
+    ],
+    "correct": 0,
+    "explanation": "Sovet davrida Lenin maydoni deb atalgan."
+   }
+  ]
+ },
+ {
+  "id": 9,
+  "section": "pullik",
+  "title": "Premium: Attestatsiya uslubidagi test",
+  "description": "Imtihon formatiga yaqin murakkab savollar toʻplami.",
+  "era": "Aralash",
+  "duration_min": 35,
+  "is_paid": 1,
+  "requires_sub": 1,
+  "price_label": "Toʻlovdan soʻng admin ochadi",
+  "questions": [
+   {
+    "text": "Sosoniylar davlatiga kim asos solgan?",
+    "options": [
+     "Ardasher I",
+     "Shopur II",
+     "Bahrom Choʻbin",
+     "Xusrav I"
+    ],
+    "correct": 0,
+    "explanation": "Milodiy 224-yilda Ardasher I asos solgan."
+   },
+   {
+    "text": "Arablarning Oʻrta Osiyoni zabt etishi asosan kim davrida yakunlangan?",
+    "options": [
+     "Qutayba ibn Muslim",
+     "Salm ibn Ziyod",
+     "Ubaydulloh",
+     "Nasr ibn Sayyor"
+    ],
+    "correct": 0,
+    "explanation": "705–715-yillarda Qutayba ibn Muslim yurishlari bilan."
+   },
+   {
+    "text": "Talas jangi (751-yil) kimlar oʻrtasida boʻlgan?",
+    "options": [
+     "Arablar va Xitoy (Tan)",
+     "Arablar va Vizantiya",
+     "Moʻgʻullar va Xorazm",
+     "Turklar va Eron"
+    ],
+    "correct": 0,
+    "explanation": "Arab qoʻshinlari Tan imperiyasi ustidan gʻalaba qozongan."
+   },
+   {
+    "text": "Muqanna qoʻzgʻoloni qaysi yillarda boʻlgan?",
+    "options": [
+     "720–737",
+     "769–783",
+     "806–810",
+     "861–870"
+    ],
+    "correct": 1,
+    "explanation": "Oq kiyimlilar qoʻzgʻoloni 769–783-yillarda davom etgan."
+   },
+   {
+    "text": "Gʻaznaviylar davlatining eng mashhur hukmdori kim?",
+    "options": [
+     "Sabuktagin",
+     "Mahmud Gʻaznaviy",
+     "Masʼud",
+     "Alptegin"
+    ],
+    "correct": 1,
+    "explanation": "Mahmud Gʻaznaviy (998–1030) davrida davlat yuksalgan."
+   },
+   {
+    "text": "Boburiylar saltanatida Toj Mahal kim davrida qurilgan?",
+    "options": [
+     "Akbar",
+     "Jahongir",
+     "Shoh Jahon",
+     "Avrangzeb"
+    ],
+    "correct": 2,
+    "explanation": "Shoh Jahon xotini xotirasiga qurdirgan."
+   },
+   {
+    "text": "1924-yilgacha Oʻrta Osiyodagi sovet respublikasi qaysi nom bilan atalgan?",
+    "options": [
+     "Turkiston ASSR",
+     "Oʻzbekiston SSR",
+     "Turkiston general-gubernatorligi",
+     "Xorazm SSR"
+    ],
+    "correct": 0,
+    "explanation": "1918-yilda Turkiston ASSR tuzilgan."
+   },
+   {
+    "text": "Oʻzbekiston Respublikasi Davlat madhiyasi matni muallifi kim?",
+    "options": [
+     "Abdulla Oripov",
+     "Erkin Vohidov",
+     "Muhammad Yusuf",
+     "Choʻlpon"
+    ],
+    "correct": 0,
+    "explanation": "Matn muallifi — Abdulla Oripov, musiqa — Mutal Burhonov."
+   }
+  ]
+ }
+];
+
+/* ---------- Telegram ---------- */
+const tgApp = window.Telegram?.WebApp;
+if (tgApp) { tgApp.ready(); tgApp.expand();
+  try { tgApp.setHeaderColor('#ffffff'); tgApp.setBackgroundColor('#ffffff'); } catch(e){} }
+const TGUSER = tgApp?.initDataUnsafe?.user || null;
+
+/* ---------- Xotira (brauzerda saqlanadi) ---------- */
+const STORE = 'iqro_tarix_v1';
+function load(){ try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch(e){ return {}; } }
+function save(d){ try { localStorage.setItem(STORE, JSON.stringify(d)); } catch(e){} }
+let saqlangan = Object.assign({ ism:'', maktab:'', obuna:false, kodlar:[], natijalar:[] }, load());
+function saqla(){ save(saqlangan); }
+
+/* ---------- Nishonlar ---------- */
+const ICONS = {
+  bosh:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 6v12H3V9l9-6z"/><path d="M9 21v-6h6v6"/></svg>',
+  testlar:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h11a2 2 0 0 1 2 2v16H7a2 2 0 0 1-2-2V5a2 2 0 0 1 1-2z"/><path d="M5 19a2 2 0 0 1 2-2h12"/><path d="M9 7h7M9 11h7"/></svg>',
+  olimpiada:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3h8v5a4 4 0 0 1-8 0V3z"/><path d="M8 4H5v2a3 3 0 0 0 3 3M16 4h3v2a3 3 0 0 1-3 3"/><path d="M12 12v4M9 20h6M10 16h4l1 4H9l1-4z"/></svg>',
+  ms:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v12H5z"/><path d="M8 8h8M8 12h5"/><circle cx="12" cy="19" r="2.5"/><path d="M10.5 16.6L9.5 22l2.5-1.4L14.5 22l-1-5.4"/></svg>',
+  reyting:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h16"/><rect x="5" y="12" width="4" height="8"/><rect x="10" y="7" width="4" height="13"/><rect x="15" y="14" width="4" height="6"/></svg>',
+  pullik:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/><path d="M12 4v2M12 18v2M4 12h2M18 12h2"/></svg>',
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><rect x="5" y="10" width="14" height="10"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>',
+  scroll:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M6 4h12v14a2 2 0 0 1-2 2H6"/><path d="M6 4a2 2 0 0 0 0 4h3"/><path d="M9 12h6M9 16h4"/></svg>',
+  emblem:`<svg class="emblem" viewBox="0 0 100 100" fill="none" stroke="#000" stroke-width="1.4">
+      <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="41" stroke-dasharray="2 3"/>
+      <path d="M50 20c8 8 12 16 12 24s-4 16-12 24c-8-8-12-16-12-24s4-16 12-24z"/>
+      <path d="M50 26v44M38 44h24"/><path d="M26 62c8 6 16 9 24 9s16-3 24-9"/>
+      <path d="M31 74h38M35 78h30"/></svg>`
+};
+
+const SECTIONS = [
+  {id:'bosh',label:'Bosh',icon:'bosh'}, {id:'testlar',label:'Testlar',icon:'testlar'},
+  {id:'olimpiada',label:'Olimpiada',icon:'olimpiada'}, {id:'ms',label:'MS',icon:'ms'},
+  {id:'reyting',label:'Reyting',icon:'reyting'}, {id:'pullik',label:'Pullik',icon:'pullik'}
+];
+const NOMLAR = {testlar:'Testlar', olimpiada:'Olimpiada', ms:'Milliy sertifikat', pullik:'Pullik testlar'};
+
+const state = {tab:'bosh', quiz:null};
+const root = document.getElementById('root'), nav = document.getElementById('nav');
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const haptic = t => { try { tgApp.HapticFeedback.impactOccurred(t||'light'); } catch(e){} };
+const alertUz = m => tgApp?.showAlert ? tgApp.showAlert(m) : alert(m);
+
+/* ---------- Qulf ---------- */
+function ochiqmi(t){
+  if (t.requires_sub && !saqlangan.obuna) return {ok:false, sabab:'obuna'};
+  if (t.is_paid){
+    const ruxsat = saqlangan.kodlar.some(k => {
+      const v = KODLAR[k];
+      return v === 'all' || (Array.isArray(v) && v.includes(t.id));
+    });
+    if (!ruxsat) return {ok:false, sabab:'pullik'};
+  }
+  return {ok:true};
+}
+
+function engYaxshi(id){
+  const r = saqlangan.natijalar.filter(x => x.id === id);
+  return r.length ? Math.max(...r.map(x => x.foiz)) : null;
+}
+
+/* ---------- Navigatsiya ---------- */
+function renderNav(){
+  nav.innerHTML = SECTIONS.map(s =>
+    `<button data-tab="${s.id}" class="${state.tab===s.id?'on':''}">${ICONS[s.icon]}<span>${s.label}</span></button>`).join('');
+  nav.querySelectorAll('button').forEach(b => b.onclick = () => { haptic(); go(b.dataset.tab); });
+}
+function go(tab){ state.tab = tab; state.quiz = null; clearInterval(timerId); renderNav(); scrollTo(0,0); render(); }
+
+function render(){
+  if (!saqlangan.ism) return kirish();      // ism yozilmagan bo‘lsa — kirish sahifasi
+  nav.style.display = 'grid';
+  renderNav();
+  if (state.tab === 'bosh') return bosh();
+  if (state.tab === 'reyting') return reyting();
+  return bolim(state.tab);
+}
+
+/* ---------- Kirish: ism yozish ---------- */
+function kirish(){
+  nav.style.display = 'none';
+  const tgIsm = TGUSER ? [TGUSER.first_name, TGUSER.last_name].filter(Boolean).join(' ') : '';
+  root.innerHTML = `
+    <div class="hero">${ICONS.emblem}
+      <h2>Xush kelibsiz!</h2>
+      <div class="small">Testni boshlashdan oldin ismingizni yozing.</div></div>
+
+    <div class="authors"><div class="lbl">Mualliflar</div>
+      <div class="names">Dilmurod Usmonov va Farrux Normurodov</div></div>
+
+    <div class="card" style="margin-top:16px">
+      <label class="small">Ism va familiya</label>
+      <input id="ism" placeholder="Masalan: Alisher Rahimov" value="${esc(tgIsm)}"
+             autocomplete="name" style="margin-top:6px">
+      <label class="small" style="display:block;margin-top:12px">Maktab / sinf (ixtiyoriy)</label>
+      <input id="maktab" placeholder="Masalan: 12-maktab, 9-A" style="margin-top:6px">
+      <button class="primary full" style="margin-top:14px" onclick="kirishTasdiq()">Kirish</button>
+      <div id="ismmsg" class="small" style="margin-top:8px"></div>
+    </div>
+
+    <div class="quote">«Tarixni bilmagan xalq — kelajagini qura olmaydi.»</div>`;
+  const inp = document.getElementById('ism');
+  inp.focus();
+  inp.onkeydown = e => { if (e.key === 'Enter') kirishTasdiq(); };
+}
+
+function kirishTasdiq(){
+  const ism = (document.getElementById('ism').value || '').trim();
+  const maktab = (document.getElementById('maktab').value || '').trim();
+  if (ism.length < 3){
+    document.getElementById('ismmsg').textContent = '⚠️ Ism va familiyangizni to‘liq yozing.';
+    return;
+  }
+  saqlangan.ism = ism; saqlangan.maktab = maktab; saqla();
+  haptic('medium'); state.tab = 'bosh'; render();
+}
+
+function ismOzgartir(){
+  saqlangan.ism = ''; saqla(); render();
+}
+
+/* ---------- Bosh ---------- */
+function bosh(){
+  const n = saqlangan.natijalar;
+  const ball = n.reduce((a,b) => a + b.ball, 0);
+  const jami = n.reduce((a,b) => a + b.jami, 0);
+  root.innerHTML = `
+    <div class="hero">${ICONS.emblem}
+      <h2>Assalomu alaykum, ${esc(saqlangan.ism)}!</h2>
+      <div class="small">${saqlangan.maktab ? esc(saqlangan.maktab) + ' · ' : ''}Tarix fanidan
+      bilimingizni sinang: testlar, olimpiada mashqlari va Milliy sertifikat namunalari.</div>
+      <div class="small" style="margin-top:6px">
+        <button onclick="ismOzgartir()" style="border:0;background:none;text-decoration:underline;font-size:13px;padding:2px">
+          Ismni o‘zgartirish</button></div></div>
+
+    <div class="authors"><div class="lbl">Mualliflar</div>
+      <div class="names">Dilmurod Usmonov va Farrux Normurodov</div></div>
+
+    <div class="stats">
+      <div class="stat"><b>${n.length}</b><span>yechilgan test</span></div>
+      <div class="stat"><b>${ball}</b><span>to‘plangan ball</span></div>
+      <div class="stat"><b>${jami ? Math.round(ball/jami*100) : 0}%</b><span>aniqlik</span></div>
+    </div>
+
+    <div class="rule">${ICONS.scroll}</div>
+
+    ${!saqlangan.obuna ? `
+      <div class="card"><h3>${ICONS.lock} Kanalga a’zo bo‘ling</h3>
+        <div class="desc">Testlarning aksari ${KANAL_NOMI} obunachilariga ochiq.</div>
+        <a class="btn primary full" style="margin-top:10px" href="${KANAL}" target="_blank">A’zo bo‘lish</a>
+        <button class="full" style="margin-top:8px" onclick="obunaTasdiq()">A’zo bo‘ldim ✓</button>
+      </div>` : ''}
+
+    <div class="card"><h3>${ICONS.testlar} Testlar</h3>
+      <div class="desc">Mavzular bo‘yicha oddiy testlar.</div>
+      <button class="primary full" style="margin-top:10px" onclick="go('testlar')">Boshlash</button></div>
+
+    <div class="card"><h3>${ICONS.olimpiada} Olimpiada</h3>
+      <div class="desc">Bosqichma-bosqich murakkablashuvchi savollar.</div>
+      <button class="full" style="margin-top:10px" onclick="go('olimpiada')">Kirish</button></div>
+
+    <div class="card"><h3>${ICONS.ms} Milliy sertifikat</h3>
+      <div class="desc">Imtihon formatidagi tayyorgarlik testlari.</div>
+      <button class="full" style="margin-top:10px" onclick="go('ms')">Kirish</button></div>
+
+    <div class="card"><h3>${ICONS.pullik} Pullik testlar</h3>
+      <div class="desc">Kengaytirilgan to‘plamlar. Kod orqali ochiladi.</div>
+      <button class="full" style="margin-top:10px" onclick="go('pullik')">Ko‘rish</button></div>
+
+    <div class="quote">«Tarixni bilmagan xalq — kelajagini qura olmaydi.»</div>
+    <div class="rule">${ICONS.scroll}</div>
+    <div class="center small">Iqro tarix testlari · ${BOT_NOMI}</div>`;
+}
+
+function obunaTasdiq(){
+  saqlangan.obuna = true; saqla(); haptic('medium'); render();
+}
+
+/* ---------- Bo'lim ---------- */
+function bolim(sec){
+  const list = TESTLAR.filter(t => t.section === sec);
+  if (!list.length){ root.innerHTML = `<h2>${NOMLAR[sec]}</h2><div class="empty">Bu bo‘limda hozircha test yo‘q.</div>`; return; }
+  root.innerHTML = `<h2>${NOMLAR[sec]}</h2>` + list.map(karta).join('');
+}
+
+function karta(t){
+  const a = ochiqmi(t), best = engYaxshi(t.id);
+  const tags = [`<span class="tag">${t.questions.length} savol</span>`,
+                `<span class="tag">${t.duration_min} daqiqa</span>`,
+                t.era ? `<span class="tag">${esc(t.era)}</span>` : '',
+                t.is_paid ? `<span class="tag fill">Pullik</span>` : '',
+                best !== null ? `<span class="tag">Eng yaxshi: ${best}%</span>` : ''].join('');
+  let act;
+  if (a.ok) act = `<button class="primary full" style="margin-top:12px" onclick="boshla(${t.id})">Testni boshlash</button>`;
+  else if (a.sabab === 'obuna') act = `<div class="lockmsg">Testni ochish uchun ${KANAL_NOMI} kanaliga a’zo bo‘ling.</div>
+      <div class="btn-row"><a class="btn primary" href="${KANAL}" target="_blank">A’zo bo‘lish</a>
+      <button onclick="obunaTasdiq()">A’zo bo‘ldim ✓</button></div>`;
+  else act = `<div class="lockmsg">${esc(t.price_label || 'Bu test pullik. Kod orqali ochiladi.')}</div>
+      <button class="full" style="margin-top:10px" onclick="kodSora()">Kod kiritish</button>`;
+  return `<div class="card ${a.ok?'':'locked'}">
+    <h3>${a.ok ? ICONS.scroll : ICONS.lock} ${esc(t.title)}</h3>
+    ${t.description ? `<div class="desc">${esc(t.description)}</div>` : ''}
+    <div class="tagrow">${tags}</div>${act}</div>`;
+}
+
+/* ---------- Kod ---------- */
+function kodSora(){
+  root.innerHTML = `<h2>Kod kiritish</h2>
+    <div class="card">
+      <div class="desc">Pullik testlarni ochish uchun administrator bergan kodni kiriting.</div>
+      <div style="margin-top:10px"><input id="kod" placeholder="Masalan: IQRO2026" autocapitalize="characters"></div>
+      <button class="primary full" style="margin-top:10px" onclick="kodTekshir()">Tasdiqlash</button>
+      <div id="kodmsg" class="small" style="margin-top:8px"></div>
+      <div class="small" style="margin-top:12px">Kod olish uchun ${BOT_NOMI} ga yozing.</div>
+    </div>
+    <button class="full" onclick="go('pullik')">Orqaga</button>`;
+  document.getElementById('kod').focus();
+}
+
+function kodTekshir(){
+  const v = (document.getElementById('kod').value || '').trim().toUpperCase();
+  const msg = document.getElementById('kodmsg');
+  if (KODLAR[v]){
+    if (!saqlangan.kodlar.includes(v)) saqlangan.kodlar.push(v);
+    saqla(); haptic('medium');
+    msg.textContent = '✅ Kod qabul qilindi. Testlar ochildi.';
+    setTimeout(() => go('pullik'), 700);
+  } else {
+    msg.textContent = '⚠️ Kod noto‘g‘ri.';
+  }
+}
+
+/* ---------- Test ---------- */
+let timerId = null;
+function boshla(id){
+  const t = TESTLAR.find(x => x.id === id);
+  if (!t || !ochiqmi(t).ok) return;
+  state.quiz = {t, i:0, javob:{}, start:Date.now(), tugash:Date.now() + t.duration_min*60000};
+  savol();
+}
+
+function savol(){
+  const q = state.quiz, item = q.t.questions[q.i], H = ['A','B','C','D','E','F'], sel = q.javob[q.i];
+  root.innerHTML = `
+    <div class="progress"><i style="width:${q.i/q.t.questions.length*100}%"></i></div>
+    <div class="qhead"><span>${q.i+1} / ${q.t.questions.length}</span><span id="timer">--:--</span></div>
+    <div class="qtext">${esc(item.text)}</div>
+    <div>${item.options.map((o,i) =>
+      `<button class="opt ${sel===i?'sel':''}" data-i="${i}"><span class="let">${H[i]}.</span>${esc(o)}</button>`).join('')}</div>
+    <div class="btn-row">
+      <button onclick="oldingi()" ${q.i===0?'disabled':''}>← Oldingi</button>
+      ${q.i === q.t.questions.length-1
+        ? `<button class="primary" onclick="yakunla()">Yakunlash</button>`
+        : `<button class="primary" onclick="keyingi()">Keyingi →</button>`}</div>
+    <div class="center small" style="margin-top:14px">
+      <button onclick="chiq()" style="border:0;background:none;text-decoration:underline">Testdan chiqish</button></div>`;
+  root.querySelectorAll('.opt').forEach(b => b.onclick = () => {
+    haptic(); q.javob[q.i] = +b.dataset.i;
+    root.querySelectorAll('.opt').forEach(x => x.classList.remove('sel'));
+    b.classList.add('sel');
+  });
+  taymer();
+}
+
+function taymer(){
+  clearInterval(timerId);
+  timerId = setInterval(() => {
+    if (!state.quiz) return clearInterval(timerId);
+    const q = Math.max(0, state.quiz.tugash - Date.now()), el = document.getElementById('timer');
+    if (el){ const m = Math.floor(q/60000), s = Math.floor(q%60000/1000);
+      el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`; }
+    if (q <= 0){ clearInterval(timerId); yakunla(true); }
+  }, 500);
+}
+
+function keyingi(){ state.quiz.i++; savol(); scrollTo(0,0); }
+function oldingi(){ state.quiz.i--; savol(); scrollTo(0,0); }
+function chiq(){
+  const ok = () => { clearInterval(timerId); state.quiz = null; go(state.tab); };
+  if (tgApp?.showConfirm) tgApp.showConfirm('Testdan chiqasizmi? Natija saqlanmaydi.', r => r && ok());
+  else if (confirm('Testdan chiqasizmi?')) ok();
+}
+
+function yakunla(avto){
+  const q = state.quiz; if (!q) return;
+  clearInterval(timerId);
+  const H = ['A','B','C','D','E','F'];
+  let ball = 0;
+  const tahlil = q.t.questions.map((item,i) => {
+    const berilgan = q.javob[i], togri = berilgan === item.correct;
+    if (togri) ball++;
+    return {...item, berilgan, togri};
+  });
+  const jami = q.t.questions.length, foiz = Math.round(ball/jami*1000)/10;
+  saqlangan.natijalar.push({id:q.t.id, nom:q.t.title, ball, jami, foiz, sana:Date.now()});
+  saqla();
+  const baho = foiz >= 86 ? 'A’lo' : foiz >= 71 ? 'Yaxshi' : foiz >= 56 ? 'Qoniqarli' : 'Takrorlash kerak';
+  const tid = q.t.id, sec = q.t.section;
+  state.quiz = null;
+  root.innerHTML = `
+    ${avto ? '<div class="lockmsg">Vaqt tugadi — javoblaringiz avtomatik qabul qilindi.</div>' : ''}
+    <div class="score">
+      <div style="font-size:18px"><b>${esc(saqlangan.ism)}</b></div>
+      ${saqlangan.maktab ? `<div class="small">${esc(saqlangan.maktab)}</div>` : ''}
+      <div class="small" style="margin-top:4px">${esc(q.t.title)}</div>
+      <div class="big">${ball}/${jami}</div><div>${foiz}% · <b>${baho}</b></div></div>
+    <button class="full" onclick="natijaNusxa(${ball},${jami},${foiz},'${esc(q.t.title).replace(/'/g,"\\'")}')">
+      Natijani nusxalash</button>
+    <div class="btn-row"><button onclick="boshla(${tid})">Qayta yechish</button>
+      <button class="primary" onclick="go('reyting')">Natijalarim</button></div>
+    <div class="rule">${ICONS.scroll}</div>
+    <h3>Javoblar tahlili</h3>
+    <div class="review">${tahlil.map((d,n) => `
+      <div class="q"><div><b>${n+1}. ${esc(d.text)}</b></div>
+        ${d.options.map((o,i) => {
+          const cls = i === d.correct ? 'correct' : (i === d.berilgan ? 'wrong' : '');
+          return `<div class="opt ${cls}" style="cursor:default"><span class="let">${H[i]}.</span>${esc(o)}</div>`;
+        }).join('')}
+        ${d.explanation ? `<div class="exp">${esc(d.explanation)}</div>` : ''}</div>`).join('')}</div>
+    <button class="full" onclick="go('${sec}')">Bo‘limga qaytish</button>`;
+  scrollTo(0,0);
+}
+
+/* Natijani matn ko‘rinishida nusxalash — o‘quvchi ustoziga yuboradi */
+function natijaNusxa(ball, jami, foiz, nom){
+  const matn = `📜 Iqro tarix testlari\n\n` +
+    `O‘quvchi: ${saqlangan.ism}\n` +
+    (saqlangan.maktab ? `Maktab/sinf: ${saqlangan.maktab}\n` : '') +
+    `Test: ${nom}\nNatija: ${ball}/${jami} (${foiz}%)\n` +
+    `Sana: ${new Date().toLocaleDateString('uz-UZ')}`;
+  const ok = () => alertUz('Natija nusxalandi. Endi ustozingizga yuborishingiz mumkin.');
+  if (navigator.clipboard?.writeText) navigator.clipboard.writeText(matn).then(ok, () => alertUz(matn));
+  else alertUz(matn);
+}
+
+/* ---------- Natijalar ---------- */
+function reyting(){
+  const n = [...saqlangan.natijalar].reverse();
+  if (!n.length){
+    root.innerHTML = `<h2>Natijalarim</h2><div class="empty">Hozircha natija yo‘q. Birinchi testni yeching!</div>`;
+    return;
+  }
+  const ball = n.reduce((a,b) => a+b.ball, 0), jami = n.reduce((a,b) => a+b.jami, 0);
+  root.innerHTML = `<h2>Natijalarim</h2>
+    <div class="small" style="margin-bottom:10px"><b>${esc(saqlangan.ism)}</b>${saqlangan.maktab ? ' · ' + esc(saqlangan.maktab) : ''}</div>
+    <div class="stats">
+      <div class="stat"><b>${n.length}</b><span>urinish</span></div>
+      <div class="stat"><b>${ball}</b><span>ball</span></div>
+      <div class="stat"><b>${Math.round(ball/jami*100)}%</b><span>o‘rtacha</span></div>
+    </div>
+    <table style="margin-top:14px"><thead><tr><th>Test</th><th>Natija</th><th>%</th></tr></thead>
+      <tbody>${n.slice(0,30).map(r => `<tr><td>${esc(r.nom)}</td><td>${r.ball}/${r.jami}</td><td>${r.foiz}%</td></tr>`).join('')}</tbody>
+    </table>
+    <div class="small center" style="margin-top:12px">Natijalar shu qurilmada saqlanadi.</div>
+    <button class="full" style="margin-top:12px" onclick="tozala()">Natijalarni tozalash</button>`;
+}
+
+function tozala(){
+  const ok = () => { saqlangan.natijalar = []; saqla(); reyting(); };
+  if (tgApp?.showConfirm) tgApp.showConfirm('Barcha natijalar o‘chirilsinmi?', r => r && ok());
+  else if (confirm('Barcha natijalar o‘chirilsinmi?')) ok();
+}
+
+/* ---------- Ishga tushirish ---------- */
+Object.assign(window, {go, boshla, keyingi, oldingi, yakunla, chiq, obunaTasdiq, kodSora,
+  kodTekshir, tozala, kirishTasdiq, ismOzgartir, natijaNusxa});
+render();
+</script>
+</body>
+</html>
